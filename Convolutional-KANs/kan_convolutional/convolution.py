@@ -5,11 +5,20 @@ from typing import List, Tuple, Union
 
 
 def calc_out_dims(matrix, kernel_side, stride, dilation, padding):
-    batch_size,n_channels,n, m = matrix.shape
+    # Kiểm tra số chiều của ma trận đầu vào
+    if len(matrix.shape) == 4:
+        batch_size, n_channels, n, m = matrix.shape
+    elif len(matrix.shape) == 3:
+        n_channels, n, m = matrix.shape
+        batch_size = 1  # Đặt batch size mặc định là 1 nếu không có
+    else:
+        raise ValueError("Unsupported matrix shape: {}".format(matrix.shape))
+
     h_out = np.floor((n + 2 * padding[0] - kernel_side - (kernel_side - 1) * (dilation[0] - 1)) / stride[0]).astype(int) + 1
     w_out = np.floor((m + 2 * padding[1] - kernel_side - (kernel_side - 1) * (dilation[1] - 1)) / stride[1]).astype(int) + 1
-    b = [kernel_side // 2, kernel_side// 2]
-    return h_out,w_out,batch_size,n_channels
+
+    return batch_size, n_channels, h_out, w_out
+
 
 def kan_conv2d(matrix: Union[List[List[float]], np.ndarray], #but as torch tensors. Kernel side asume q el kernel es cuadrado
              kernel, 
