@@ -5,12 +5,11 @@ from typing import List, Tuple, Union
 
 
 def calc_out_dims(matrix, kernel_side, stride, dilation, padding):
-    # Kiểm tra số chiều của ma trận đầu vào
     if len(matrix.shape) == 4:
         batch_size, n_channels, n, m = matrix.shape
     elif len(matrix.shape) == 3:
         n_channels, n, m = matrix.shape
-        batch_size = 1  # Đặt batch size mặc định là 1 nếu không có
+        batch_size = 1
     else:
         raise ValueError("Unsupported matrix shape: {}".format(matrix.shape))
 
@@ -18,6 +17,7 @@ def calc_out_dims(matrix, kernel_side, stride, dilation, padding):
     w_out = np.floor((m + 2 * padding[1] - kernel_side - (kernel_side - 1) * (dilation[1] - 1)) / stride[1]).astype(int) + 1
 
     return batch_size, n_channels, h_out, w_out
+
 
 
 
