@@ -20,6 +20,7 @@ def calc_out_dims(matrix, kernel_side, stride, dilation, padding):
     return batch_size, n_channels, h_out, w_out
 
 
+
 def kan_conv2d(matrix: Union[List[List[float]], np.ndarray], #but as torch tensors. Kernel side asume q el kernel es cuadrado
              kernel, 
              kernel_side,
